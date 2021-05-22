@@ -75,5 +75,5 @@
         const form = document.querySelector(".js-form");
         form.addEventListener("submit", onformSubmit);
     };
-    init ();
+    init();
 }
