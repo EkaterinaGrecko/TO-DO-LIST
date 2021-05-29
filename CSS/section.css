@@ -38,10 +38,12 @@
     font-weight: lighter;
     border: none;
     background-color: teal;
+    transition: 1s;
 }
 
 .section__button:hover {
     background-color: hsl(180, 87%, 33%);
+    transform: scale(1.1);
 }
 
 .section__button:active {
