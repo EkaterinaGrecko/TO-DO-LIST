@@ -9,6 +9,7 @@
         ];
         render();
     };
+
     const removeTask = index => {
         tasks = [
             ...tasks.splice(0, index),
@@ -52,6 +53,7 @@
             });
         });
     };
+
     const bindSwitchDoneEvents = () => {
         const switchDoneButtons = document.querySelectorAll(".js-switchDone");
         switchDoneButtons.forEach((switchDoneButton, index) => {
@@ -128,15 +130,15 @@
         event.preventDefault();
 
         const newTaskContent = document.querySelector(".js-addTask").value.trim();
-        if (newTaskContentewTa === "") {
+        if (newTaskContent === "") {
             newTaskInput.focus();
             return;
         }
 
-        addNewTask (newTaskContent)
+        addNewTask(newTaskContent)
         clearNewTaskInput(newTaskInput);
     };
-    
+
 
     const init = () => {
         render();
