@@ -1,7 +1,6 @@
 .buttons__container {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-gap: 15px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 @media (max-width:767px) {
@@ -12,7 +11,7 @@
 
 .buttons {
     border: none;
-    background-color: white;
+    background-color: transparent;
     color: blue;
     transition: 1s;
 }
