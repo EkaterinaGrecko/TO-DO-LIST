@@ -1,17 +1,46 @@
 {
-    const tasks = [];
+    let tasks = [];
+    let hideDoneTasks = false;
 
-    const addNewTask = (newTaskContent) => {
-        tasks.push({ content: newTaskContent });
+    const addNewTask = newTaskContent => {
+        tasks = [
+            ...tasks,
+            { content: newTaskContent },
+        ];
         render();
     };
-    const removeTask = (index) => {
-        tasks.splice(index, 1);
+    const removeTask = index => {
+        tasks = [
+            ...tasks.splice(0, index),
+            ...tasks.splice(index + 1),
+        ];
         render();
     };
 
-    const switchTaskDone = (index) => {
-        tasks[index].done = !tasks[index].done;
+    const switchTaskDone = index => {
+        tasks = [
+            ...tasks.splice(0, index),
+            {
+                ...tasks[index],
+                done: !tasks[index].done,
+            },
+            ...tasks.splice(index + 1),
+        ];
+
+        render();
+    };
+
+    const markAllTasksDone = () => {
+        tasks = tasks.map((task) => ({
+            ...task,
+            done: true,
+        }));
+
+        render();
+    };
+
+    const switchHideDoneTasks = () => {
+        hideDoneTasks = !hideDoneTasks;
         render();
     };
 
@@ -32,42 +61,82 @@
         });
     };
 
-    const render = () => {
-        let htmlString = "";
-
-        for (const task of tasks) {
-            htmlString += `
-            <li 
-            class="tasksList__item js-task"
+    const renderTasks = () => {
+        const taskToHTML = task => `
+            <li class="
+               tasksList__item${task.done && hideDoneTasks ? " tasksList__item--hidden" : ""} js-task"
             >
             <button class="tasksList__button tasksList__button--switchDone js-switchDone">
-            ${task.done ? "✓" : ""}
+                ${task.done ? "✓" : ""}
             </button>
-            <span class="tasksList__content ${task.done ? "tasksList__content--done" : ""}">
-            ${task.content}</span>
+            <span class="tasksList__content ${task.done ? "tasksList__content--done" : ""}" >
+              ${task.content}
+            </span >
             <button class="tasksList__button tasksList__button--remove js-remove">
-            🗑
+               🗑
             </button>
-            </li>
-            `;
-        };
+            </li >
+        `;
 
-        document.querySelector(".js-tasks").innerHTML = htmlString;
-        bindRemoveEvents();
-        bindSwitchDoneEvents();
+        const tasksElement = document.querySelector(".js-tasks");
+        tasksElement.innerHTML = tasks.map(taskToHTML).join("");
     };
 
+
+    const bindButtonsEvents = () => {
+        const markAllTasksDoneButton = document.querySelector(".js-markAllTasksDoneButton");
+        if (markAllTasksDoneButton) {
+            markAllTasksDoneButton.addEventListener("click", markAllTasksDone);
+        }
+
+        const switchHideDoneTasksButton = document.querySelector(".js-switchHideDoneTasksButton");
+
+        if (switchHideDoneTasksButton) {
+            switchHideDoneTasksButton.addEventListener("click", switchHideDoneTasks);
+        }
+    };
+    const renderButtons = () => {
+        const buttonsElement = document.querySelector(".js-buttons");
+
+        if (!tasks.length) {
+            buttonsElement.innerHTML = "";
+            return;
+        }
+
+        buttonsElement.innerHTML = `
+        <button class="buttons js-switchHideDoneTasksButton">
+            ${hideDoneTasks ? "Pokaż" : "Ukryj"} ukończone
+        </button >
+        <button 
+          class="buttons js-markAllTasksDone"
+          ${tasks.every(({ done }) => done) ? "disabled" : ""}
+        >
+          Ukończ wszystkie
+        </button> 
+      `;
+    };
+
+    const render = () => {
+        renderTasks();
+        renderButtons();
+        bindRemoveEvents();
+        bindSwitchDoneEvents();
+        bindButtonsEvents();
+    };
 
     const onformSubmit = (event) => {
         event.preventDefault();
 
         const newTaskContent = document.querySelector(".js-addTask").value.trim();
-        if (newTaskContent !== "") {
-            addNewTask(newTaskContent);
-            newTaskContent.value = "";
+        if (newTaskContentewTa === "") {
+            newTaskInput.focus();
+            return;
         }
-        newTaskElement.focus();
+
+        addNewTask (newTaskContent)
+        clearNewTaskInput(newTaskInput);
     };
+    
 
     const init = () => {
         render();
