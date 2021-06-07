@@ -129,6 +129,10 @@
     const onformSubmit = (event) => {
         event.preventDefault();
 
+        const clearNewTaskInput = (newTaskInput) => {
+            newTaskInput.focus();
+            newTaskInput.value = "";
+        }
         const newTaskContent = document.querySelector(".js-addTask").value.trim();
         if (newTaskContent === "") {
             newTaskInput.focus();
