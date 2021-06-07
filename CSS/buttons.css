@@ -1,0 +1,30 @@
+.buttons__container {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-gap: 15px;
+}
+
+@media (max-width:767px) {
+    .button__container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.buttons {
+    border: none;
+    background-color: white;
+    color: blue;
+    transition: 1s;
+}
+
+.buttons:hover {
+    background-color: hsla(240, 83%, 72%, 0.726);
+}
+
+.buttons--hidden {
+    display: none;
+}
+
+.buttons:disabled {
+    color: rgba(235, 223, 223, 0.596);
+}
