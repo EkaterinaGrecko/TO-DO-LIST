@@ -14,6 +14,10 @@
     word-breaK: break-all;
 }
 
+.tasksList__item--hidden {
+    display: none;
+}
+
 .tasksList__button {
     border: none;
     color: white;
