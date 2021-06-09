@@ -12,20 +12,25 @@
 
     const removeTask = index => {
         tasks = [
-            ...tasks.splice(0, index),
-            ...tasks.splice(index + 1),
+            ...tasks.slice(0, index),
+            ...tasks.slice(index + 1),
         ];
         render();
     };
 
+    const clearInput = (inputElement) => {
+        inputElement.value = "";
+        inputElement.focus();
+    };
+
     const switchTaskDone = index => {
         tasks = [
-            ...tasks.splice(0, index),
+            ...tasks.slice(0, index),
             {
                 ...tasks[index],
                 done: !tasks[index].done,
             },
-            ...tasks.splice(index + 1),
+            ...tasks.slice(index + 1),
         ];
 
         render();
@@ -66,7 +71,7 @@
     const renderTasks = () => {
         const taskToHTML = task => `
             <li class="
-               tasksList__item${task.done && hideDoneTasks ? " tasksList__item--hidden" : ""} js-task"
+               tasksList__item${task.done && hideDoneTasks ? " tasksList__item--hidden" : ""}"
             >
             <button class="tasksList__button tasksList__button--switchDone js-switchDone">
                 ${task.done ? "✓" : ""}
@@ -84,19 +89,6 @@
         tasksElement.innerHTML = tasks.map(taskToHTML).join("");
     };
 
-
-    const bindButtonsEvents = () => {
-        const markAllTasksDoneButton = document.querySelector(".js-markAllTasksDoneButton");
-        if (markAllTasksDoneButton) {
-            markAllTasksDoneButton.addEventListener("click", markAllTasksDone);
-        }
-
-        const switchHideDoneTasksButton = document.querySelector(".js-switchHideDoneTasksButton");
-
-        if (switchHideDoneTasksButton) {
-            switchHideDoneTasksButton.addEventListener("click", switchHideDoneTasks);
-        }
-    };
     const renderButtons = () => {
         const buttonsElement = document.querySelector(".js-buttons");
 
@@ -110,12 +102,25 @@
             ${hideDoneTasks ? "Pokaż" : "Ukryj"} ukończone
         </button >
         <button 
-          class="buttons js-markAllTasksDone"
+          class="buttons js-markAllTasksDoneButton"
           ${tasks.every(({ done }) => done) ? "disabled" : ""}
         >
           Ukończ wszystkie
         </button> 
       `;
+    };
+
+    const bindButtonsEvents = () => {
+        const markAllTasksDoneButton = document.querySelector(".js-markAllTasksDoneButton");
+        if (markAllTasksDoneButton) {
+            markAllTasksDoneButton.addEventListener("click", markAllTasksDone);
+        }
+
+        const switchHideDoneTasksButton = document.querySelector(".js-switchHideDoneTasksButton");
+
+        if (switchHideDoneTasksButton) {
+            switchHideDoneTasksButton.addEventListener("click", switchHideDoneTasks);
+        }
     };
 
     const render = () => {
@@ -126,21 +131,19 @@
         bindButtonsEvents();
     };
 
-    const onformSubmit = (event) => {
+    const onFormSubmit = (event) => {
         event.preventDefault();
 
-        const clearNewTaskInput = (newTaskInput) => {
-            newTaskInput.focus();
-            newTaskInput.value = "";
-        }
-        const newTaskContent = document.querySelector(".js-addTask").value.trim();
+
+        const inputElement = document.querySelector(".js-addTask");
+        const newTaskContent = inputElement.value.trim();
         if (newTaskContent === "") {
-            newTaskInput.focus();
+            inputElement.focus();
             return;
         }
 
-        addNewTask(newTaskContent)
-        clearNewTaskInput(newTaskInput);
+        addNewTask(newTaskContent);
+        clearInput(inputElement);
     };
 
 
@@ -148,7 +151,7 @@
         render();
 
         const form = document.querySelector(".js-form");
-        form.addEventListener("submit", onformSubmit);
+        form.addEventListener("submit", onFormSubmit);
     };
     init();
 }
