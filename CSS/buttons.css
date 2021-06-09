@@ -5,19 +5,22 @@
 
 @media (max-width:767px) {
     .button__container {
-        grid-template-columns: 1fr;
+        flex-basis: 100%;
+        margin: 15px;
     }
 }
 
 .buttons {
     border: none;
     background-color: transparent;
-    color: blue;
-    transition: 1s;
+    color: teal;
+    transition: color 0.5s;
+    cursor: pointer;
+    margin-left: 15px;
 }
 
 .buttons:hover {
-    background-color: hsla(240, 83%, 72%, 0.726);
+    color: rgb(17, 179, 179);
 }
 
 .buttons--hidden {
@@ -25,5 +28,5 @@
 }
 
 .buttons:disabled {
-    color: rgba(235, 223, 223, 0.596);
+    color: #ccc;
 }
